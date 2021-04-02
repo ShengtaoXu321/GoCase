@@ -28,13 +28,13 @@ func main() {
 	}
 
 	//设置最大闲置连接和最大的打开连接，具体数值按需指定
-	db.SetMaxtitleleConns(32) // 最大闲置连接
-	db.SetMaxOpenConns(32)    // 最大打开连接
+	db.SetMaxIdleConns(32) // 最大闲置连接
+	db.SetMaxOpenConns(32) // 最大打开连接
 
 	// 1. 增删改查操作
 
 	// 1.1 单次增加
-	err = Insert(db, "这111", "ww111")
+	err = Insert(db, "123", "321")
 
 	// 1.2 单次查询操作
 	err = Select(db, "这是标题")
@@ -43,7 +43,7 @@ func main() {
 	// 1.4 删除操作
 	err = Delete(db, "这是三级")
 	//// 1.5 更改操作
-	err = Update(db, "更改标题")
+	err = Update(db, "updateurl", "这是小标题")
 }
 
 // 封装增加函数
@@ -59,7 +59,7 @@ func Insert(db *sql.DB, title string, url string) error {
 	if err1 != nil {
 		log.Println("执行增加sql语句失败", err1)
 	}
-	lasttitle, err2 := rst.LastInserttitle()
+	lasttitle, err2 := rst.LastInsertId()
 	if err2 != nil {
 		log.Println("增加最后一个插入失败", err2)
 	}
@@ -109,7 +109,7 @@ func Select(db *sql.DB, title1 string) error {
 	// 下面的操作的重要性：确保进行QueryRow之后，能调用Scan方法，否则持有的数据库链接不会被释放
 	var title, url string
 	row.Scan(&title, &url)
-	log.Println("查询到的信息为：title是%d, 题目是%s, url是%s", title, title, url)
+	log.Printf("查询到的信息为：题目是[%s], url是[%s]", title, url)
 	return nil
 }
 
@@ -137,21 +137,22 @@ func SelectAll(db *sql.DB) error {
 	for rows.Next() {
 		var title, url string
 		rows.Scan(&title, &url)
-		fmt.Println("%s, %s", title, url)
+		fmt.Printf("%s, %s", title, url)
+		fmt.Println()
 	}
 	return nil
 }
 
 // 封装更改操作-- 写死操作
-func Update(db *sql.DB, title string) error {
+func Update(db *sql.DB, url string, title string) error {
 	// 第一步：编写sql语句
-	sen := "UPDATE hotpoint SET title=? WHERE title=?"
+	sen := "UPDATE hotpoint SET url=? WHERE title=?"
 	stmt, err := db.Prepare(sen)
 	if err != nil {
 		log.Println("更改预处理失败", err)
 	}
 	defer stmt.Close()
-	rst, err1 := stmt.Exec(title)
+	rst, err1 := stmt.Exec(title, url)
 	if err1 != nil {
 		log.Println("更改sql语句执行失败", err1)
 	}
