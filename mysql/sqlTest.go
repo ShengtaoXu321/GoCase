@@ -21,7 +21,7 @@ func main() {
 	fmt.Println(config)
 
 	// 连接数据库，获取连接实例
-	db, err := sql.Open("mysql", config)
+	db, err := sql.Open("mysql", config) // 注意！！！！，这里不要使用:= 我们是给全局变量赋值，然后在mian函数中使用全局变量db
 	// 判断
 	if err != nil {
 		fmt.Println("打开数据库错误", err)
