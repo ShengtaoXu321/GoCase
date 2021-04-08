@@ -39,7 +39,7 @@ func main() {
 			result gin.H // gin.H() 方法简化json的生成，本质就是一个map[string]interface{}
 		)
 		age := c.Param("age")
-		fmt.Printf("输入年龄：%d", age)
+		fmt.Println("输入年龄:", age)
 		s1 := "SELECT age,name from user where age=?"
 		row := db.QueryRow(s1, age)
 		err = row.Scan(&user.age, &user.name)
