@@ -104,9 +104,11 @@ func main() {
 		A[i].Url = newResUrl[i]
 		s1 := A[i].Title
 		s2 := A[i].Url
-		sen := "INSERT INTO hotpoint(title,url) VALUES (?,?)"
-		_, err1 := db1.Exec(sen, s1, s2)
+		//sen := "INSERT INTO hotpoint(title,url) VALUES (?,?)"
 
+		// 新增一个判断，如果数据库中已经有该数据，不进行追加操作
+		sen1 := "INSERT INTO hotpoint(title,url) VALUES (?,?)"
+		_, err1 := db1.Exec(sen1, s1, s2)
 		if err1 != nil {
 			log.Println("数据插入失败", err1)
 		}

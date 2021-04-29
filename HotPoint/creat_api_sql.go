@@ -32,7 +32,7 @@ func main() {
 	// 2. 创建api
 	router := gin.Default() // 使用Default()方法来获取一个基本的路由变量
 	// API处理程序 -- 获取用户详细信息
-	router.GET("/hotpoint/:id", func(c *gin.Context) { // 使用匿名函数作为路由的处理函数，处理函数必须是func(*gin.Context)类型的函数
+	router.GET("/:id", func(c *gin.Context) { // 使用匿名函数作为路由的处理函数，处理函数必须是func(*gin.Context)类型的函数
 		var (
 			hp1    HotPoint1
 			result gin.H // gin.H() 方法简化json的生成，本质就是一个map[string]interface{}
@@ -59,5 +59,5 @@ func main() {
 		c.JSON(http.StatusOK, result)
 
 	})
-	router.Run(":18520")
+	router.Run("0.0.0.0:8080")
 }
